@@ -3,6 +3,9 @@
     "version": "0.1.27",
     "description": "An open-source multi-agent AI team built on Agency Swarm",
     "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
     "bin": {
         "openswarm": "./bin/openswarm"
     },
