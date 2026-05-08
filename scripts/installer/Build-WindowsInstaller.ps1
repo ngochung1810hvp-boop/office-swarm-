@@ -16,7 +16,8 @@
 [CmdletBinding()]
 param(
     [string]$InnoPath = "",
-    [switch]$SkipBuild
+    [switch]$SkipBuild,
+    [switch]$AutoInstallInno
 )
 
 $ErrorActionPreference = "Stop"
@@ -51,12 +52,42 @@ function Get-TauriReleaseArtifactDir {
 
 function Find-InnoCompiler {
     $candidates = @(
+        (Join-Path $env:LOCALAPPDATA "Programs\Inno Setup 6\ISCC.exe"),
         "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
         "$env:ProgramFiles\Inno Setup 6\ISCC.exe"
     )
     foreach ($c in $candidates) {
         if (Test-Path $c) { return $c }
     }
+    return $null
+}
+
+function Ensure-InnoCompiler {
+    param([string]$RequestedPath, [switch]$AutoInstall)
+
+    if ($RequestedPath -and (Test-Path $RequestedPath)) { return $RequestedPath }
+    $found = Find-InnoCompiler
+    if ($found) { return $found }
+
+    if (-not $AutoInstall) { return $null }
+
+    Write-Host "Không tìm thấy Inno Setup (ISCC.exe). Đang thử cài tự động..." -ForegroundColor Yellow
+
+    $choco = Get-Command choco -ErrorAction SilentlyContinue
+    if ($choco) {
+        & choco install innosetup --no-progress --yes | Out-Host
+        $found = Find-InnoCompiler
+        if ($found) { return $found }
+    }
+
+    $winget = Get-Command winget -ErrorAction SilentlyContinue
+    if ($winget) {
+        # winget IDs can change; this is best-effort.
+        & winget install --id JRSoftware.InnoSetup --exact --silent --accept-package-agreements --accept-source-agreements | Out-Host
+        $found = Find-InnoCompiler
+        if ($found) { return $found }
+    }
+
     return $null
 }
 
@@ -129,8 +160,9 @@ if (-not $SkipBuild) {
         }
     }
 
-    # Inno shortcuts expect this exact path + filename under {app}
-    $destRel = Join-Path $Staging "desktop\src-tauri\target\release"
+    # Keep the installer payload small: copy only the runnable exe (+ adjacent dlls) to a dedicated folder.
+    # (Never ship the full Cargo target/ directory; it adds hundreds of MB and slows CI dramatically.)
+    $destRel = Join-Path $Staging "desktop\app"
     New-Item -ItemType Directory -Path $destRel -Force | Out-Null
     Copy-Item $exeSrc (Join-Path $destRel "mi-lam-van-phong.exe") -Force
     Get-ChildItem $rel -Filter "*.dll" -ErrorAction SilentlyContinue | ForEach-Object {
@@ -141,10 +173,15 @@ if (-not $SkipBuild) {
 $iss = Join-Path $PSScriptRoot "MiLamVanPhong.iss"
 if (-not (Test-Path $iss)) { throw "Missing $iss" }
 
-$iscc = $InnoPath
-if (-not $iscc) { $iscc = Find-InnoCompiler }
+$auto = $AutoInstallInno
+if (-not $auto) {
+    # Auto-install by default on CI runners; keep local runs conservative unless explicitly requested.
+    if ($env:CI -or $env:GITHUB_ACTIONS) { $auto = $true }
+}
+
+$iscc = Ensure-InnoCompiler -RequestedPath $InnoPath -AutoInstall:$auto
 if (-not $iscc -or -not (Test-Path $iscc)) {
-    throw "Không tìm thấy Inno Setup (ISCC.exe). Cài từ https://jrsoftware.org/isinfo.php hoặc truyền -InnoPath."
+    throw "Không tìm thấy Inno Setup (ISCC.exe). Cài từ https://jrsoftware.org/isinfo.php, hoặc chạy script với -AutoInstallInno, hoặc truyền -InnoPath."
 }
 
 New-Item -ItemType Directory -Path $OutDir -Force | Out-Null

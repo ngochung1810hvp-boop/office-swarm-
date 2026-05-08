@@ -2,6 +2,11 @@ name: Build Windows Installer
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Tag version (e.g. 0.1.0). If set, workflow will create/push tag v<version> then build + release.'
+        required: false
+        type: string
   push:
     tags:
       - 'v*'
@@ -15,6 +20,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create and push tag (manual)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.version != '' }}
+        shell: pwsh
+        run: |
+          $tag = "v${{ inputs.version }}"
+          git tag $tag
+          git push origin $tag
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -42,7 +57,7 @@ jobs:
       - name: Build Windows installer
         shell: pwsh
         run: |
-          .\scripts\installer\Build-WindowsInstaller.ps1
+          .\scripts\installer\Build-WindowsInstaller.ps1 -AutoInstallInno
 
       - name: List build output
         shell: pwsh

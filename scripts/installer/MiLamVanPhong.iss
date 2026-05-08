@@ -40,15 +40,16 @@ Name: "desktopicon"; Description: "Tạo biểu tượng trên Desktop"; GroupDe
 Name: "pythondeps"; Description: "Tạo venv và chạy pip install (cần Python 3.10+ và Internet, 5–15 phút)"; GroupDescription: "Thư viện Python:"; Flags: checkedonce
 
 [Files]
-Source: "{#StagingPath}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+; Exclude Cargo build output from installer payload (huge and unnecessary)
+Source: "{#StagingPath}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "desktop\src-tauri\target\*"
 
 [Icons]
-Name: "{group}\{#MyAppName}"; Filename: "{app}\desktop\src-tauri\target\release\{#MyAppExeName}"; WorkingDir: "{app}"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\desktop\src-tauri\target\release\{#MyAppExeName}"; WorkingDir: "{app}"; Tasks: desktopicon
+Name: "{group}\{#MyAppName}"; Filename: "{app}\desktop\app\{#MyAppExeName}"; WorkingDir: "{app}"
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\desktop\app\{#MyAppExeName}"; WorkingDir: "{app}"; Tasks: desktopicon
 
 [Run]
 Filename: "{cmd}"; Parameters: "/c ""{app}\scripts\installer\post-install-python.bat"""; StatusMsg: "Đang cài thư viện Python (pip)..."; Flags: waituntilterminated; Tasks: pythondeps
-Filename: "{app}\desktop\src-tauri\target\release\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\desktop\app\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\.venv"
