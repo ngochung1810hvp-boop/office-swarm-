@@ -21,6 +21,34 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+# Tauri/Cargo may place the .exe in target\release\ or target\<triple>\release\; the
+# base name is usually the Cargo package name (mi-lam-van-phong) or its underscore form.
+function Get-TauriReleaseArtifactDir {
+    param([string]$SrcTauriRoot)
+    # Prefer per-target output first (common when rust-cache / CI uses an explicit triple).
+    $candidates = @(
+        (Join-Path $SrcTauriRoot "target\x86_64-pc-windows-msvc\release")
+        (Join-Path $SrcTauriRoot "target\aarch64-pc-windows-msvc\release")
+        (Join-Path $SrcTauriRoot "target\release")
+    )
+    foreach ($dir in $candidates) {
+        if (-not (Test-Path $dir)) { continue }
+        $names = @("mi-lam-van-phong.exe", "mi_lam_van_phong.exe")
+        foreach ($n in $names) {
+            $p = Join-Path $dir $n
+            if (Test-Path $p) { return $dir }
+        }
+    }
+    foreach ($dir in $candidates) {
+        if (-not (Test-Path $dir)) { continue }
+        $exes = @(Get-ChildItem $dir -File -Filter "*.exe" -ErrorAction SilentlyContinue)
+        $main = $exes | Where-Object { $_.Name -match '^(mi-lam-van-phong|mi_lam_van_phong)\.exe$' }
+        if ($main) { return $dir }
+        if ($exes.Count -eq 1) { return $dir }
+    }
+    return $null
+}
+
 function Find-InnoCompiler {
     $candidates = @(
         "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
@@ -65,10 +93,42 @@ if (-not $SkipBuild) {
     npm run tauri:build
     Pop-Location
 
-    $rel = Join-Path $RepoRoot "desktop\src-tauri\target\release"
+    $srcTauri = Join-Path $RepoRoot "desktop\src-tauri"
+    $rel = Get-TauriReleaseArtifactDir -SrcTauriRoot $srcTauri
+    if (-not $rel) {
+        $targetRoot = Join-Path $srcTauri "target"
+        $found = if (Test-Path $targetRoot) {
+            Get-ChildItem $targetRoot -Recurse -File -Filter "*.exe" -ErrorAction SilentlyContinue |
+                Where-Object { $_.FullName -notmatch '\\deps\\' -and $_.FullName -notmatch '\\incremental\\' } |
+                ForEach-Object FullName
+        } else { @() }
+        throw "Không tìm thấy thư mục release Tauri (target\\release hoặc target\\*-pc-windows-msvc\\release). " +
+            "Các file .exe tìm được: $(if ($found) { $found -join '; ' } else { '(không có)' })"
+    }
+
+    $names = @("mi-lam-van-phong.exe", "mi_lam_van_phong.exe")
+    $exeSrc = $null
+    foreach ($n in $names) {
+        $p = Join-Path $rel $n
+        if (Test-Path $p) { $exeSrc = $p; break }
+    }
+    if (-not $exeSrc) {
+        $exes = @(Get-ChildItem $rel -File -Filter "*.exe" -ErrorAction SilentlyContinue)
+        $match = $exes | Where-Object { $_.Name -match 'mi[-_]lam' } | Select-Object -First 1
+        if ($match) {
+            $exeSrc = $match.FullName
+        } elseif ($exes.Count -eq 1) {
+            $exeSrc = $exes[0].FullName
+        } else {
+            $list = ($exes | ForEach-Object Name) -join ', '
+            throw "Không xác định được binary Tauri trong $rel . Các .exe: $list"
+        }
+    }
+
+    # Inno shortcuts expect this exact path + filename under {app}
     $destRel = Join-Path $Staging "desktop\src-tauri\target\release"
     New-Item -ItemType Directory -Path $destRel -Force | Out-Null
-    Copy-Item (Join-Path $rel "mi-lam-van-phong.exe") $destRel -Force
+    Copy-Item $exeSrc (Join-Path $destRel "mi-lam-van-phong.exe") -Force
     Get-ChildItem $rel -Filter "*.dll" -ErrorAction SilentlyContinue | ForEach-Object {
         Copy-Item $_.FullName $destRel -Force
     }
