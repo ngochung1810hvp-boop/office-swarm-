@@ -2,7 +2,7 @@
 
 # Mì Làm Văn Phòng
 
-**Trợ lý AI đa tác tử cho công sở Việt Nam.**
+**Trợ lý AI cho công sở Việt Nam.**
 
 <img src="assets/mi-lam-van-phong-banner.png" alt="Mì Làm Văn Phòng" width="640" />
 
