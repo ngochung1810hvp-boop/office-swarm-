@@ -57,7 +57,7 @@ jobs:
       - name: Build Windows installer
         shell: pwsh
         run: |
-          .\scripts\installer\Build-WindowsInstaller.ps1 -AutoInstallInno
+          .\scripts\installer\Build-WindowsInstaller.ps1 -AutoInstallInno -AppVersion "${{ github.ref_name }}"
 
       - name: List build output
         shell: pwsh

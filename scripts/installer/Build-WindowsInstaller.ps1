@@ -17,7 +17,8 @@
 param(
     [string]$InnoPath = "",
     [switch]$SkipBuild,
-    [switch]$AutoInstallInno
+    [switch]$AutoInstallInno,
+    [string]$AppVersion = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -190,7 +191,17 @@ Write-Host "ISCC: $iscc"
 Write-Host "Staging: $Staging"
 Write-Host "Output: $OutDir"
 
-& $iscc $iss /DStagingPath="$Staging" /O"$OutDir"
+$effectiveVersion = $AppVersion
+if (-not $effectiveVersion) {
+    $ref = $env:GITHUB_REF_NAME
+    if ($ref -and $ref -match '^v\d') { $effectiveVersion = $ref.TrimStart('v') }
+}
+
+if ($effectiveVersion) {
+    & $iscc $iss /DStagingPath="$Staging" /DMyAppVersion="$effectiveVersion" /O"$OutDir"
+} else {
+    & $iscc $iss /DStagingPath="$Staging" /O"$OutDir"
+}
 
 Write-Host ""
 Write-Host "Xong. File cài đặt nằm trong: $OutDir" -ForegroundColor Green

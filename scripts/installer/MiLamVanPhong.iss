@@ -3,7 +3,9 @@
 ; Thủ công: ISCC.exe MiLamVanPhong.iss /DStagingPath="C:\full\path\to\staging" /O"C:\out"
 
 #define MyAppName "Mì Làm Văn Phòng"
-#define MyAppVersion "0.1.0"
+#ifndef MyAppVersion
+  #define MyAppVersion "0.1.0"
+#endif
 #define MyAppPublisher "Agency Swarm"
 #define MyAppURL "https://github.com/VRSEN/openswarm"
 #define MyAppExeName "mi-lam-van-phong.exe"
