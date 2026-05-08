@@ -53,7 +53,7 @@ def _build_instructions() -> str:
 def create_slides_agent() -> Agent:
     return Agent(
         name="Slides Agent",
-        description="PowerPoint presentation specialist for creating, editing, and analyzing .pptx files",
+        description="Chuyên viên Trình chiếu — tạo, chỉnh sửa và phân tích slide PowerPoint (.pptx) bằng tiếng Việt cho doanh nghiệp và cơ quan tại Việt Nam.",
         instructions=_build_instructions(),
         # files_folder=os.path.join(current_dir, "files"),
         # tools_folder=os.path.join(current_dir, "tools"),
@@ -95,10 +95,10 @@ def create_slides_agent() -> Agent:
             response_include=["web_search_call.action.sources"] if is_openai_provider() else None,
         ),
         conversation_starters=[
-            "Create a new presentation about the benefits of using AI in the workplace.",
-            "Edit my existing presentation and improve the design.",
-            "Create a pitch deck for my startup idea.",
-            "Turn this document into a professional slide deck.",
+            "Tạo slide báo cáo tổng kết Quý 1/2026 (12 slide) trình ban giám đốc, font Be Vietnam Pro.",
+            "Chỉnh sửa slide cũ của em và cải thiện thiết kế cho chuyên nghiệp hơn.",
+            "Tạo slide giới thiệu sản phẩm mới ra mắt thị trường Việt Nam (10 slide bằng tiếng Việt).",
+            "Chuyển báo cáo Word này thành deck thuyết trình ngắn gọn cho cuộc họp giao ban.",
         ],
     )
 

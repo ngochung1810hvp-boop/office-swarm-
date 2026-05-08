@@ -34,7 +34,7 @@ def _build_instructions() -> str:
 def create_docs_agent() -> Agent:
     return Agent(
         name="Docs Agent",
-        description="Professional Document Engineer specializing in creating, editing, and converting files to multiple formats (PDF, Markdown, TXT, DOCX).",
+        description="Chuyên viên Văn bản — soạn công văn, tờ trình, biên bản, quyết định, báo cáo, hợp đồng theo NĐ 30/2020/NĐ-CP và xuất ra DOCX/PDF/Markdown/TXT.",
         instructions=_build_instructions(),
         files_folder="./files",
         tools_folder="./tools",
@@ -45,10 +45,10 @@ def create_docs_agent() -> Agent:
         ),
         tools=[WebSearchTool(), IPythonInterpreter, CopyFile],
         conversation_starters=[
-            "Draft Week 34 client status report with a table and export as PDF.",
-            "Create a one-page AI chatbot proposal and export as DOCX.",
-            "Create a product launch executive memo in HTML.",
-            "Write an onboarding SOP for a remote operations coordinator and deliver as Markdown.",
+            "Soạn công văn đề nghị phê duyệt ngân sách Q2/2026 theo NĐ 30/2020 và xuất DOCX.",
+            "Soạn tờ trình mua sắm thiết bị văn phòng trị giá 350 triệu đồng và xuất PDF.",
+            "Soạn biên bản họp giao ban tháng 5/2026 với 5 nội dung kết luận, xuất DOCX.",
+            "Soạn hợp đồng dịch vụ tư vấn giữa Công ty A và Công ty B (giá trị 200 triệu, có VAT).",
         ],
     )
 

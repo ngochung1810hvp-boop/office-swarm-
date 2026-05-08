@@ -17,7 +17,7 @@ instructions_path = os.path.join(current_dir, "instructions.md")
 def create_data_analyst() -> Agent:
     return Agent(
         name="Data Analyst",
-        description="Advanced data analytics agent that generates charts and provides actionable insights.",
+        description="Chuyên viên Phân tích Dữ liệu — phân tích doanh thu, KPI, dashboard cho doanh nghiệp Việt Nam (định dạng VND, dd/mm/yyyy, biểu đồ tiếng Việt có dấu).",
         instructions=instructions_path,
         tools_folder=os.path.join(current_dir, "tools"),
         model=get_default_model(),
@@ -38,9 +38,9 @@ def create_data_analyst() -> Agent:
             response_include=["web_search_call.action.sources"] if is_openai_provider() else None,
         ),
         conversation_starters=[
-            "Analyze this CSV file and show me the key trends.",
-            "Create a dashboard with charts from my sales data.",
-            "Connect to my Google Analytics and summarize last month's traffic.",
-            "Find hidden patterns in this dataset and visualize them.",
+            "Phân tích file Excel doanh thu Q1/2026 và chỉ ra các xu hướng chính (theo VND).",
+            "Tạo dashboard biểu đồ KPI bán hàng theo tháng cho 6 tháng gần nhất.",
+            "Kết nối Google Analytics và tổng hợp traffic website tháng trước.",
+            "Đọc dữ liệu công nợ khách hàng và tìm các khách hàng quá hạn trên 60 ngày.",
         ],
     )

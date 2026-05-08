@@ -1,128 +1,132 @@
 <div align="center">
 
-# 🚀 OpenSwarm
+# Mì Làm Văn Phòng
 
-![OpenSwarm](assets/new-framework.jpg)
+**Trợ lý AI đa tác tử cho công sở Việt Nam.**
+
+<img src="assets/mi-lam-van-phong-banner.png" alt="Mì Làm Văn Phòng" width="640" />
 
 </div>
 
-**The fully open-source multi-agent system that does everything Claude Code can't.**
+Một hệ thống multi-agent open-source được tinh chỉnh đặc biệt cho **công việc văn phòng tại Việt Nam**: soạn thảo văn bản hành chính theo `Nghị định 30/2020/NĐ-CP`, báo cáo doanh thu KPI bằng VND, lập slide thuyết trình, phân tích dữ liệu Excel, và phối hợp công việc qua Zalo/Outlook/Teams — tất cả từ một câu lệnh trong terminal.
 
-Create polished slide decks, research reports, data visualizations, documents, images, and videos — all from a single prompt in your terminal. No platform, no UI, no setup hassles.
-
-✨ **One prompt → Complete deliverables**
-🎯 **8 specialized agents working together**
-⚡ **Install in 30 seconds, running in 60**
-🔧 **100% customizable and forkable**
-
-Built on [Agency Swarm](https://github.com/VRSEN/agency-swarm) — the framework powering real AI agencies.
+> Xây dựng trên [Agency Swarm](https://github.com/VRSEN/agency-swarm) — framework chạy thật trong các AI agency.
 
 ---
 
-> 💼 **Investor or looking to integrate AI agents into your SaaS?**
-> We're the team behind OpenSwarm and Agency Swarm, building the future of multi-agent systems.
-> **[Partner with us →](https://vrsen-ai.notion.site/fee2d391a8d74b24baa04a0b648af83c?pvs=105)**
+## Vì sao "Mì Làm Văn Phòng"?
+
+Thay vì một AI cố làm tất cả mọi việc một cách hời hợt, bạn có một **đội ngũ chuyên viên AI** phối hợp dưới một Trưởng phòng Điều phối — đúng như cách văn phòng Việt Nam vận hành.
+
+### Ví dụ thực tế cho công việc văn phòng VN
+
+Dán các câu lệnh sau vào terminal và xem kết quả:
+
+- **"Soạn công văn đề nghị phê duyệt ngân sách Q2/2026 và slide trình bày 10 trang đi kèm."** → Công văn DOCX đúng thể thức NĐ 30/2020 + deck PPTX bằng tiếng Việt.
+- **"Phân tích doanh thu Quý 1 từ file Excel và làm slide báo cáo cho ban giám đốc."** → Biểu đồ doanh thu (VND), insight, và slide tổng kết.
+- **"Soạn tờ trình mua thiết bị 350 triệu đồng và biên bản họp giao ban tuần này."** → Tờ trình + biên bản đúng định dạng văn thư VN.
+- **"Tổng hợp Nghị định 30/2020 và soạn checklist văn thư cho phòng Hành Chính."** → Báo cáo nghiên cứu + checklist DOCX.
+- **"Tạo banner Tết Nguyên Đán 2027 và video quảng cáo 15 giây cho fanpage công ty."** → Hình ảnh + video có chữ tiếng Việt đúng dấu.
+
+Kết nối thêm 10.000+ dịch vụ ngoài qua [Composio](https://composio.dev) (Gmail, Outlook, Zalo qua webhook, Microsoft Teams, Notion, MISA…).
 
 ---
 
-## 💡 What Makes This Different?
+## Đội ngũ AI của bạn
 
-Instead of one agent trying to do everything poorly, you get **specialists coordinated by an orchestrator**.
-
-### 🎯 Real Examples
-
-Paste these into your terminal and watch magic happen:
-
-- **"Create a complete investor pitch for OpenSwarm"** → Full deck + executive summary + market research
-- **"Research my top 5 competitors and write 3 SEO-optimized blog posts"** → Competitive analysis + keyword research + publish-ready content
-- **"Analyze this data and create a quarterly report with charts"** → Data insights + visualizations + formatted document
-- **"Generate a product launch video with animations"** → Professional video with graphics and transitions
-- **"Build me a marketing campaign for Q2"** → Strategy doc + creative assets + implementation timeline
-
-Connect to 10,000+ external services (Gmail, Slack, GitHub, HubSpot) via Composio for even more power.
+| Agent (code) | Vai trò Việt | Nhiệm vụ |
+|---|---|---|
+| **Orchestrator** | Trưởng phòng Điều phối | Tiếp nhận yêu cầu và phân công cho specialist phù hợp. Không tự thực thi task, chỉ điều phối. |
+| **General Agent** | Thư ký Văn phòng | Email, lịch họp, Zalo/Teams/Outlook, MISA, kết nối 10.000+ hệ thống ngoài qua Composio. |
+| **Deep Research Agent** | Chuyên viên Nghiên cứu | Nghiên cứu thị trường, đối thủ, văn bản pháp luật (vbpl.vn, GSO, CafeF, VnEconomy) có dẫn nguồn. |
+| **Data Analyst** | Chuyên viên Phân tích Dữ liệu | Phân tích doanh thu, KPI, dashboard, biểu đồ tiếng Việt có dấu, định dạng VND. |
+| **Slides Agent** | Chuyên viên Trình chiếu | Slide thuyết trình HTML chuyên nghiệp, xuất `.pptx`, font hỗ trợ tiếng Việt. |
+| **Docs Agent** | Chuyên viên Văn bản | Công văn, tờ trình, biên bản, quyết định, hợp đồng, báo cáo theo `NĐ 30/2020/NĐ-CP`. Xuất DOCX/PDF. |
+| **Image Agent** | Chuyên viên Hình ảnh | Tạo và chỉnh sửa banner, poster, ảnh sản phẩm; nhận biết bối cảnh văn hóa VN (Tết, lễ hội, áo dài...). |
+| **Video Agent** | Chuyên viên Video | Tạo video quảng cáo, video nội bộ, đào tạo — phụ đề tiếng Việt có dấu, voiceover ba miền. |
 
 ---
 
-## 🤖 Meet Your AI Team
+## Cài đặt nhanh trong 30 giây
 
-| Agent                      | What it does                                                                                                                                                                                 |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Orchestrator**           | Routes every user request to the right specialist(s). Never answers directly — pure coordination.                                                                                            |
-| **Virtual Assistant**      | Handles everyday tasks: writing, scheduling, messaging, task management. Gains 10,000+ external integrations via [Composio](https://composio.dev) (Gmail, Slack, GitHub, HubSpot, and more). |
-| **Deep Research**          | Conducts comprehensive, evidence-based web research with citations and balanced analysis.                                                                                                    |
-| **Data Analyst**           | Analyses structured data, builds charts, runs statistical models — all inside an isolated IPython kernel.                                                                                    |
-| **Slides Agent**           | Generates complete, visually polished HTML slide decks, then exports them to PPTX.                                                                                                           |
-| **Docs Agent**             | Creates formatted Word documents and PDFs from outlines or raw content.                                                                                                                      |
-| **Image Generation Agent** | Generates and edits images using Gemini 2.5 Flash Image / Gemini 3 Pro Image and fal.ai.                                                                                                     |
-| **Video Generation Agent** | Produces videos via Sora (OpenAI), Veo (Google), and Seedance (fal.ai); also edits and combines clips.                                                                                       |
-
----
-
-## 📦 Get Started in 30 Seconds
-
-**For most users (recommended):**
+**Khuyến nghị cho hầu hết người dùng:**
 
 ```bash
 npm install -g @vrsen/openswarm
 openswarm
 ```
 
-That's it! The setup wizard handles everything: authentication, dependencies, and configuration.
+Wizard sẽ tự lo: xác thực, dependencies, và cấu hình.
 
-**Requirements:** Node.js 20+ (Python 3.10+ auto-installed)
+**Yêu cầu:** Node.js 20+ (Python 3.10+ tự động cài).
 
-## 🔧 Build Your Own Swarm
+## Tự build swarm văn phòng riêng của bạn
 
-Fork this repo and create your own specialized AI team in minutes:
+Fork repo này và tạo đội ngũ AI riêng cho doanh nghiệp:
 
 ```bash
 git clone https://github.com/VRSEN/openswarm.git
 cd openswarm
 ```
 
-Then tell **Claude Code**, **Cursor**, or **Codex**:
+Sau đó nói với **Claude Code**, **Cursor**, hoặc **Codex**:
 
-> _"Turn this into an SEO optimization swarm"_
+> _"Tinh chỉnh swarm này cho doanh nghiệp xuất nhập khẩu Việt Nam của tôi"_
+> _"Thêm agent chuyên về kế toán MISA và báo cáo thuế"_
 
-They'll automatically customize all agents for your use case.
+Coding agent sẽ tự động customize tất cả agent cho use case của bạn.
 
-**Popular custom swarms:**
+**Các swarm phổ biến đã tinh chỉnh từ template này:**
 
-- **SEO Swarm:** Keyword research + competitor analysis + blog writing
-- **Sales Swarm:** Lead research + outreach + proposal generation
-- **Marketing Swarm:** Campaign planning + creative assets + analytics
-- **Product Swarm:** Market research + feature specs + launch materials
-
-## ⚙️ API Keys & Setup
-
-The setup wizard walks you through everything, but you'll need at least one of these:
-
-**Required (choose one):**
-
-- `OPENAI_API_KEY` - For GPT 5.5 and Sora video generation
-- `ANTHROPIC_API_KEY` - For Claude models
-
-**Optional superpowers:**
-
-- `COMPOSIO_API_KEY` - Unlock 10,000+ integrations (Gmail, Slack, GitHub, etc.)
-- `GOOGLE_API_KEY` - Gemini image generation + Veo video
-- `FAL_KEY` - Advanced video editing and effects
-- `SEARCH_API_KEY` - Web search for research agent
-
-Tools gracefully degrade when keys are missing — you'll get clear instructions on what to add.
+- **Văn phòng Hành Chính:** soạn công văn + biên bản + báo cáo + email nội bộ
+- **Phòng Kinh Doanh:** phân tích sales + tờ trình duyệt giá + slide khách hàng
+- **Phòng Marketing:** banner Tết + video quảng cáo + báo cáo hiệu quả chiến dịch
+- **Phòng Tài Chính:** báo cáo doanh thu VND + dashboard KPI + tờ trình ngân sách
 
 ---
 
-## 🚀 Coming Soon
+## API Keys & Cấu hình
 
-- **Agent Builder Agent** - Create custom swarms from a single prompt
-- **OpenClaw + Claude Code integration** - All agents in one place
+Wizard sẽ hướng dẫn từng bước. Bạn cần ít nhất **một** trong các key sau:
 
-⭐ **Star us on GitHub** to stay updated and help us prioritize features!
+**Bắt buộc (chọn một):**
 
-## 🏗️ For Developers
+- `OPENAI_API_KEY` — cho GPT 5.5 và Sora video.
+- `ANTHROPIC_API_KEY` — cho Claude.
 
-**Local development:**
+**Tùy chọn để mở khóa thêm sức mạnh:**
+
+- `COMPOSIO_API_KEY` — kết nối 10.000+ tích hợp (Gmail, Outlook, Slack, Notion…).
+- `GOOGLE_API_KEY` — Gemini (hình ảnh, có khả năng giữ chữ tiếng Việt tốt) + Veo (video).
+- `FAL_KEY` — chỉnh sửa video nâng cao và hiệu ứng.
+- `SEARCH_API_KEY` — search web cho Chuyên viên Nghiên cứu.
+
+Tools tự động giảm cấp khi thiếu key, kèm hướng dẫn rõ ràng cần bổ sung gì.
+
+---
+
+## Đặc điểm tinh chỉnh cho VN
+
+- **Tiếng Việt có dấu UTF-8** là ngôn ngữ làm việc mặc định cho mọi agent.
+- **Văn bản hành chính theo NĐ 30/2020/NĐ-CP**: 9 yếu tố thể thức, mẫu HTML/CSS sẵn sàng, đặt tên file không dấu, ký hiệu văn bản chuẩn (CV, TTr, BC, QĐ, TB, KH, BB, HĐ).
+- **Định dạng VN**: tiền VND `1.250.000 ₫`, ngày `dd/mm/yyyy`, giờ 24h, múi giờ `Asia/Ho_Chi_Minh`, dấu phẩy thập phân, dấu chấm phân tách hàng nghìn.
+- **Nguồn nghiên cứu ưu tiên VN**: vbpl.vn, GSO, SBV, HOSE, CafeF, VnEconomy, VnExpress Kinh Doanh.
+- **Tránh dấu gạch ngang dài "—"** trong câu trả lời tiếng Việt — chuẩn của công sở VN.
+- **Lịch tự động né các ngày lễ Việt Nam**: Tết Dương lịch, Tết Nguyên Đán, Giỗ Tổ Hùng Vương, 30/4, 1/5, 2/9.
+- **Hỗ trợ hệ thống nội địa**: MISA AMIS, Base.vn, Lark, Zalo OA (qua webhook), VNPT-CA / Viettel-CA cho ký số.
+
+---
+
+## Sắp ra mắt
+
+- **Agent Builder Agent** — tạo swarm tùy chỉnh từ một câu prompt.
+- **OpenClaw + Claude Code integration** — tất cả agent trong một nơi.
+
+Star repo trên GitHub để cập nhật và giúp chúng tôi ưu tiên tính năng!
+
+## Dành cho dev
+
+**Chạy local:**
 
 ```bash
 git clone https://github.com/VRSEN/openswarm.git
@@ -130,33 +134,34 @@ cd openswarm
 python swarm.py
 ```
 
-**Docker deployment:**
+**Triển khai Docker:**
 
 ```bash
 git clone https://github.com/VRSEN/openswarm.git
 cd openswarm
-cp .env.example .env        # Add your API keys
+cp .env.example .env        # thêm API keys của bạn
 docker-compose up --build
 ```
 
 **API server:**
 
 ```bash
-python server.py           # Runs on localhost:8080
+python server.py           # chạy ở localhost:8080
 ```
 
 ---
 
-## 📺 Learn More
+## Tài liệu thêm
 
-- **Watch the full demo:** [YouTube video →](https://youtu.be/c5DdXzqaeVU?si=rM2CNaZ8qVwMvqmz)
+- **Demo đầy đủ:** [YouTube →](https://youtu.be/c5DdXzqaeVU?si=rM2CNaZ8qVwMvqmz)
 - **Multi-agent framework:** [Agency Swarm](https://github.com/VRSEN/agency-swarm)
-- **External integrations:** [Composio](https://composio.dev)
+- **Tích hợp ngoài:** [Composio](https://composio.dev)
+- **Văn bản pháp luật VN:** [vbpl.vn](https://vbpl.vn), [thuvienphapluat.vn](https://thuvienphapluat.vn)
 
 ---
 
-## 📄 License
+## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — xem [LICENSE](LICENSE).
 
-**Built with ❤️ by the team behind [Agency Swarm](https://github.com/VRSEN/agency-swarm)**
+**Mì Làm Văn Phòng** — tinh chỉnh từ [OpenSwarm](https://github.com/VRSEN/openswarm) bởi đội ngũ Agency Swarm, dành cho công sở Việt Nam.

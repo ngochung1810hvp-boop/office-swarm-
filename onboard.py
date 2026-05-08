@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""OpenSwarm interactive setup wizard.
+"""Mì Làm Văn Phòng interactive setup wizard.
 
 Run directly:   python onboard.py
 Auto-launched:  python run.py  (when no provider key is found)
@@ -32,18 +32,19 @@ console = Console()
 
 ENV_PATH = Path(__file__).parent / ".env"
 
-# ── questionary theme ─────────────────────────────────────────────────────────
+# ── questionary theme — Mì Làm Văn Phòng (navy + orange on white) ────────────
+# Primary navy matches the logo wordmark; orange echoes the tiger mascot.
 _QSTYLE = None
 if _HAS_QUESTIONARY:
     _QSTYLE = QStyle([
-        ("qmark",       "fg:#4fc3f7 bold"),
+        ("qmark",       "fg:#1e3a8a bold"),
         ("question",    "bold"),
-        ("answer",      "fg:#4fc3f7 bold"),
-        ("pointer",     "fg:#4fc3f7 bold noreverse"),
+        ("answer",      "fg:#1e3a8a bold"),
+        ("pointer",     "fg:#f97316 bold noreverse"),
         ("highlighted", "noreverse"),
-        ("selected",    "fg:#4fc3f7 bold noreverse"),
-        ("separator",   "fg:#555555 noreverse"),
-        ("instruction", "fg:#555555 italic noreverse"),
+        ("selected",    "fg:#1e3a8a bold noreverse"),
+        ("separator",   "fg:#94a3b8 noreverse"),
+        ("instruction", "fg:#64748b italic noreverse"),
         ("text",        "noreverse"),
     ])
 
@@ -144,7 +145,7 @@ ADD_ONS = [
 
 def _step(n: int, label: str) -> None:
     console.print()
-    console.print(Rule(f"[bold]Step {n}  ·  {label}[/bold]", style="cyan"))
+    console.print(Rule(f"[bold]Bước {n}  ·  {label}[/bold]", style="blue"))
     console.print()
 
 
@@ -214,9 +215,9 @@ def _write_env(updates: dict) -> None:
 def run_onboarding() -> None:
     console.print()
     console.print(Panel.fit(
-        "[bold cyan]OpenSwarm[/bold cyan]  [dim]—  open-source multi-agent AI team[/dim]\n"
-        "[dim]Let's get you set up in a few steps.[/dim]",
-        border_style="cyan",
+        "[bold blue]Mì Làm Văn Phòng[/bold blue]  [dim]·  trợ lý AI đa tác tử cho công sở Việt Nam[/dim]\n"
+        "[dim]Cùng cài đặt nhanh trong vài bước.[/dim]",
+        border_style="blue",
         padding=(1, 4),
     ))
 
@@ -224,21 +225,21 @@ def run_onboarding() -> None:
     updates: dict[str, str] = {}
 
     # ── Step 1: provider ──────────────────────────────────────────────────────
-    _step(1, "AI Provider")
+    _step(1, "Nhà cung cấp AI")
 
     provider_choices = [
         Choice(title=p["name"], value=p)
         for p in PROVIDERS
     ]
-    provider = _ask_select("Choose your primary AI provider:", provider_choices)
+    provider = _ask_select("Chọn nhà cung cấp AI chính:", provider_choices)
 
     # ── Step 2: API key ───────────────────────────────────────────────────────
     _step(2, "API Key")
 
     existing_key = existing.get(provider["env_key"], "")
     if existing_key:
-        console.print(f"  [dim]{provider['env_key']} is already configured.[/dim]")
-        if _ask_confirm("  Update it?", default=False):
+        console.print(f"  [dim]{provider['env_key']} đã được cấu hình.[/dim]")
+        if _ask_confirm("  Cập nhật?", default=False):
             key = _ask_secret(f"{provider['name']} API key", provider["url"])
             updates[provider["env_key"]] = key or existing_key
         else:
@@ -251,7 +252,7 @@ def run_onboarding() -> None:
     updates["DEFAULT_MODEL"]       = provider["default_model"]
 
     # ── Step 3: add-ons ───────────────────────────────────────────────────────
-    _step(3, "Add-ons  [dim](optional)[/dim]")
+    _step(3, "Tiện ích bổ sung  [dim](tùy chọn)[/dim]")
 
     available = [a for a in ADD_ONS if provider["name"] not in a["exclude_for"]]
     addon_choices = [
@@ -259,29 +260,29 @@ def run_onboarding() -> None:
             title=(
                 [
                     ("class:text",  a["name"]),
-                    ("fg:#555555",  "  ·  "),
-                    ("fg:#666666",  a["description"]),
+                    ("fg:#94a3b8",  "  ·  "),
+                    ("fg:#64748b",  a["description"]),
                 ]
                 if _HAS_QUESTIONARY
-                else f"{a['name']}  —  {a['description']}"
+                else f"{a['name']}  ·  {a['description']}"
             ),
             value=a["id"],
         )
         for a in available
     ]
-    selected_ids = _ask_checkbox("Select add-ons to enable:", addon_choices)
+    selected_ids = _ask_checkbox("Chọn các tiện ích muốn bật:", addon_choices)
     selected_addons = [a for a in available if a["id"] in selected_ids]
 
     # ── Step 4: add-on keys ───────────────────────────────────────────────────
     if selected_addons:
-        _step(4, "Add-on Keys")
+        _step(4, "Khóa tiện ích")
         for addon in selected_addons:
             console.print(f"\n  [bold]{addon['name'].split('  ')[0]}[/bold]")
             for key_spec in addon["keys"]:
                 existing_val = existing.get(key_spec["env"], "")
                 if existing_val:
-                    console.print(f"  [dim]{key_spec['env']} is already configured.[/dim]")
-                    if not _ask_confirm("  Update it?", default=False):
+                    console.print(f"  [dim]{key_spec['env']} đã được cấu hình.[/dim]")
+                    if not _ask_confirm("  Cập nhật?", default=False):
                         updates[key_spec["env"]] = existing_val
                         continue
                 val = _ask_secret(key_spec["label"], key_spec["url"])
@@ -293,24 +294,24 @@ def run_onboarding() -> None:
 
     # ── summary ───────────────────────────────────────────────────────────────
     console.print()
-    console.print(Rule("[bold green]Setup complete[/bold green]", style="green"))
+    console.print(Rule("[bold green]Hoàn tất cài đặt[/bold green]", style="green"))
     console.print()
 
     table = Table(box=box.SIMPLE, show_header=False, padding=(0, 2))
     table.add_column(style="dim", no_wrap=True)
     table.add_column()
-    table.add_row("Provider", f"[cyan]{provider['name']}[/cyan]")
-    table.add_row("Model",    f"[cyan]{provider['default_model']}[/cyan]")
-    table.add_row(".env",     f"[cyan]{ENV_PATH}[/cyan]")
+    table.add_row("Nhà cung cấp", f"[blue]{provider['name']}[/blue]")
+    table.add_row("Model",        f"[blue]{provider['default_model']}[/blue]")
+    table.add_row(".env",         f"[blue]{ENV_PATH}[/blue]")
     saved = [k for k, v in updates.items() if v and not k.startswith("DEFAULT_")]
     if saved:
-        table.add_row("Keys saved", f"[cyan]{', '.join(saved)}[/cyan]")
+        table.add_row("Đã lưu khóa", f"[blue]{', '.join(saved)}[/blue]")
     console.print(table)
 
     console.print()
     console.print(Panel(
-        "[bold]python swarm.py[/bold]  [dim]launch interactive terminal[/dim]\n"
-        "[bold]python server.py[/bold]  [dim]start the API server[/dim]",
+        "[bold]python swarm.py[/bold]  [dim]chạy giao diện terminal[/dim]\n"
+        "[bold]python server.py[/bold]  [dim]khởi động API server[/dim]",
         border_style="green",
         padding=(0, 3),
     ))
@@ -321,5 +322,5 @@ if __name__ == "__main__":
     try:
         run_onboarding()
     except KeyboardInterrupt:
-        console.print("\n\n[dim]Setup cancelled.[/dim]\n")
+        console.print("\n\n[dim]Đã hủy cài đặt.[/dim]\n")
         sys.exit(0)

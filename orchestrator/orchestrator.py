@@ -11,8 +11,9 @@ def create_orchestrator() -> Agent:
     return Agent(
         name="Orchestrator",
         description=(
-            "Primary coordinator that plans multi-agent workflows, runs independent workstreams in parallel, "
-            "and hands off to a specialist when tight user iteration is needed."
+            "Trưởng phòng Điều phối của Mì Làm Văn Phòng. Tiếp nhận yêu cầu của người dùng, "
+            "lập kế hoạch đa-agent, chạy song song khi các phần việc độc lập, và Handoff "
+            "cho specialist khi tác vụ chỉ cần một chuyên viên xử lý xuyên suốt."
         ),
         instructions="./instructions.md",
         model=get_default_model(),
@@ -20,10 +21,10 @@ def create_orchestrator() -> Agent:
             reasoning=Reasoning(effort="medium", summary="auto") if is_openai_provider() else None,
         ),
         conversation_starters=[
-            "What can this agency do?",
-            "Build a full launch package: research, slides, docs, and creative assets.",
-            "Analyze my data and then turn insights into a polished executive deck.",
-            "Coordinate a workflow for proposal doc + promo visuals + short product video.",
+            "Mì Làm Văn Phòng có thể giúp tôi những việc gì?",
+            "Soạn công văn xin phê duyệt ngân sách Q2/2026 và slide trình bày 10 trang đi kèm.",
+            "Phân tích doanh thu Quý 1 từ file Excel và làm slide báo cáo cho ban giám đốc.",
+            "Tổng hợp tờ trình + biên bản họp + báo cáo PDF cho dự án mở chi nhánh Đà Nẵng.",
         ],
     )
 

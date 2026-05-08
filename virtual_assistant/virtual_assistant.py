@@ -19,7 +19,7 @@ IPythonInterpreter.__name__ = "ProgrammaticToolCalling"
 def create_virtual_assistant() -> Agent:
     return Agent(
         name="General Agent",
-        description="Your virtual assistant that connects to 10000+ external systems.",
+        description="Thư ký Văn phòng — trợ lý hành chính kết nối với 10.000+ hệ thống ngoài (Gmail, Outlook, Zalo, Teams, MISA, lịch, CRM, kế toán...).",
         instructions="./instructions.md",
         files_folder="./files",
         tools_folder="./tools",
@@ -39,10 +39,10 @@ def create_virtual_assistant() -> Agent:
             SearchTools,
         ],
         conversation_starters=[
-            "Send a summary of my unread emails to Slack.",
-            "Schedule a meeting with my team for next Monday.",
-            "What external systems do I have connected?",
-            "Draft and send a follow-up email to my last meeting attendees.",
+            "Tóm tắt email chưa đọc trong hộp thư của em rồi gửi vào Teams nhóm Văn phòng.",
+            "Đặt lịch họp giao ban với team Kinh doanh thứ Hai tuần sau, 9h00, qua Google Meet.",
+            "Em đã kết nối những hệ thống ngoài nào rồi?",
+            "Soạn email cảm ơn khách hàng dự cuộc họp hôm qua và gửi từ Outlook của em.",
         ],
     )
 
