@@ -192,6 +192,7 @@ Write-Host "Staging: $Staging"
 Write-Host "Output: $OutDir"
 
 $effectiveVersion = $AppVersion
+if ($effectiveVersion -and $effectiveVersion -match '^v\\d') { $effectiveVersion = $effectiveVersion.TrimStart('v') }
 if (-not $effectiveVersion) {
     $ref = $env:GITHUB_REF_NAME
     if ($ref -and $ref -match '^v\d') { $effectiveVersion = $ref.TrimStart('v') }
