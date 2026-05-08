@@ -47,7 +47,7 @@ Name: "{group}\{#MyAppName}"; Filename: "{app}\desktop\src-tauri\target\release\
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\desktop\src-tauri\target\release\{#MyAppExeName}"; WorkingDir: "{app}"; Tasks: desktopicon
 
 [Run]
-Filename: "{cmd}"; Parameters: "/c ""{app}\scripts\installer\post-install-python.bat"""; Status: "Đang cài thư viện Python (pip)..."; Flags: waituntilterminated; Tasks: pythondeps
+Filename: "{cmd}"; Parameters: "/c ""{app}\scripts\installer\post-install-python.bat"""; StatusMsg: "Đang cài thư viện Python (pip)..."; Flags: waituntilterminated; Tasks: pythondeps
 Filename: "{app}\desktop\src-tauri\target\release\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [UninstallDelete]

@@ -88,9 +88,13 @@ if (-not $SkipBuild) {
 
     Write-Host "=== 2/4 npm install + vite build + tauri build ===" -ForegroundColor Cyan
     Push-Location (Join-Path $RepoRoot "desktop")
+    # Ensure Cargo is available when Rust was installed via rustup (common: ~/.cargo/bin not on PATH in some shells)
+    $cargoBin = Join-Path $env:USERPROFILE ".cargo\bin"
+    if (Test-Path $cargoBin) { $env:Path = "$cargoBin;$env:Path" }
     npm install
     npm run build
-    npm run tauri:build
+    # We only need the compiled .exe for the Inno installer; skip MSI/NSIS bundling (WiX light.exe can fail on some setups)
+    npm run tauri:build -- --no-bundle
     Pop-Location
 
     $srcTauri = Join-Path $RepoRoot "desktop\src-tauri"
