@@ -198,14 +198,6 @@ Tools tự động giảm cấp khi thiếu key, kèm hướng dẫn rõ ràng c
 - **Hỗ trợ hệ thống nội địa**: MISA AMIS, Base.vn, Lark, Zalo OA (qua webhook), VNPT-CA / Viettel-CA cho ký số.
 
 ---
-
-## Sắp ra mắt
-
-- **Agent Builder Agent** — tạo swarm tùy chỉnh từ một câu prompt.
-- **OpenClaw + Claude Code integration** — tất cả agent trong một nơi.
-
-Star repo trên GitHub để cập nhật và giúp chúng tôi ưu tiên tính năng!
-
 ## Dành cho dev
 
 **Chạy native desktop app (khuyến nghị):**
@@ -246,7 +238,6 @@ docker-compose up --build
 
 ## Tài liệu thêm
 
-- **Demo đầy đủ:** [YouTube →](https://youtu.be/c5DdXzqaeVU?si=rM2CNaZ8qVwMvqmz)
 - **Multi-agent framework:** [Agency Swarm](https://github.com/VRSEN/agency-swarm)
 - **Tích hợp ngoài:** [Composio](https://composio.dev)
 - **Văn bản pháp luật VN:** [vbpl.vn](https://vbpl.vn), [thuvienphapluat.vn](https://thuvienphapluat.vn)
