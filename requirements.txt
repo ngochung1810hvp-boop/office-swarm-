@@ -2,6 +2,8 @@ agency-swarm[fastapi,jupyter,litellm]>=1.9.7
 questionary>=2.0.0
 fastapi
 uvicorn
+python-dotenv>=1.0.0
+python-multipart>=0.0.9
 composio==0.8.0
 composio-openai-agents==0.8.0
 pytz

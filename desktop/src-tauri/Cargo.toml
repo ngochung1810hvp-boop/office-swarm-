@@ -1,0 +1,27 @@
+[package]
+name = "mi-lam-van-phong"
+version = "0.1.0"
+description = "Mì Làm Văn Phòng — trợ lý AI đa tác tử cho công sở Việt Nam."
+authors = ["VRSEN <hello@vrsen.ai>"]
+edition = "2021"
+rust-version = "1.75"
+
+[lib]
+name = "mi_lam_van_phong_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.0", features = [] }
+
+[dependencies]
+tauri = { version = "2.1", features = [] }
+tauri-plugin-dialog = "2.0"
+tauri-plugin-shell = "2.0"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+log = "0.4"
+tokio = { version = "1", features = ["full"] }
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]

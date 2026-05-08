@@ -24,7 +24,16 @@ Tài liệu này cung cấp cho coding agent (Cursor, Claude Code, Codex…) m�
 ```
 swarm.py                  ← config chính: import tất cả agent, định nghĩa luồng giao tiếp
 shared_instructions.md    ← context chung cho mọi agent (tiếng Việt, NĐ 30/2020, định dạng VN)
-server.py                 ← API entry point (FastAPI)
+server.py                 ← API entry point (FastAPI) — backend cho cả CLI & desktop app
+desktop_api.py            ← FastAPI router /desktop/* (env, files, agents) cho native app
+
+desktop/                  ← Native desktop app (Tauri + React + TypeScript)
+  src/                    ← React UI (chat, file browser, settings)
+  src-tauri/              ← Vỏ Rust spawn Python sidecar
+  package.json            ← Dependencies frontend (Tauri CLI, React, Vite)
+
+uploads/                  ← User upload (auto-tạo, dùng cho file_urls khi gửi yêu cầu)
+outputs/                  ← Agent xuất file vào đây (DOCX, PPTX, PNG, MP4…)
 
 orchestrator/             ← Trưởng phòng Điều phối
   orchestrator.py
@@ -127,6 +136,18 @@ Coding agent sẽ đọc file này, hiểu cấu trúc, và tự sửa đổi.
 - Models cấu hình qua `DEFAULT_MODEL` trong `.env` — không hardcode.
 - **Tất cả output cuối cùng cho người dùng phải bằng tiếng Việt có dấu, UTF-8.**
 - Đặt tên file đầu ra **không dấu, dùng gạch dưới** (vd: `cv_so_12_phe_duyet_ngan_sach_q2_2026.docx`).
+- **File output cho người dùng phải lưu vào `outputs/`** (không phải thư mục agent) để hiển thị trong File Browser của native app.
+- File user upload kèm yêu cầu nằm ở `uploads/` (path tuyệt đối được truyền qua `file_urls` của FastAPI request).
+
+## Cách thêm agent mới (không cần sửa UI)
+
+Native desktop app đọc danh sách agent động từ `/desktop/agents` (xem `desktop_api.py`). Khi bạn:
+
+1. Tạo thư mục agent mới (`my_agent/my_agent.py` + `instructions.md`).
+2. Import factory `create_my_agent` trong `swarm.py` và thêm vào `all_agents`.
+3. Cập nhật `AGENT_LABELS` trong `desktop/src/components/ChatPane.tsx` (chỉ để tên hiển thị tiếng Việt — agent vẫn xuất hiện trong dropdown ngay cả khi không có label).
+
+Native app sẽ tự thấy agent mới ngay sau khi backend khởi động lại. Người dùng không cần build lại file installer.
 
 Trước khi tạo agent, đọc kỹ:
 

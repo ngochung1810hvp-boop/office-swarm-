@@ -8,6 +8,20 @@ Before proceeding with agent creation, please read the following instructions ca
 
 - `.cursor/rules/agency-swarm-workflow.mdc` - your primary guide for creating agents and agencies
 
+## Project Layout
+
+This repo ships **two front-end shells** on top of the same `Agency` defined in `swarm.py`:
+
+| Shell                 | Entry point      | When to use                                                       |
+|-----------------------|------------------|-------------------------------------------------------------------|
+| Native desktop (Tauri + React) | `desktop/`        | Primary UX for end users — recommended for non-technical office workers. |
+| Terminal (TUI)        | `python swarm.py` | Quick local debugging or headless servers.                       |
+| FastAPI server        | `python server.py` | Backs both the desktop app and any external integrations.        |
+
+The Tauri shell in `desktop/src-tauri/src/lib.rs` spawns `python server.py` as a sidecar on app launch and waits for `GET /desktop/health` before unveiling the window. Custom desktop endpoints (`/desktop/env`, `/desktop/files*`, `/desktop/agents`) live in `desktop_api.py` and are mounted on top of the agency-swarm FastAPI app.
+
+When adding new agents, you do not need to update the desktop UI — `ChatPane.tsx` reads the agent roster dynamically from `/desktop/agents`.
+
 The following files can be read on demand, depending on the task at hand:
 
 - `.cursor/commands/add-mcp.md` - how to add MCP servers to an agent

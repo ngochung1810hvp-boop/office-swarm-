@@ -49,16 +49,98 @@ Kết nối thêm 10.000+ dịch vụ ngoài qua [Composio](https://composio.dev
 
 ## Cài đặt nhanh trong 30 giây
 
-**Khuyến nghị cho hầu hết người dùng:**
+**Khuyến nghị cho hầu hết người dùng — Native Desktop App (Windows / macOS / Linux):**
+
+```bash
+git clone https://github.com/VRSEN/openswarm.git
+cd openswarm
+pip install -r requirements.txt        # backend Python
+npm run desktop:install                 # frontend Tauri + React
+npm run desktop:dev                     # mở app native
+```
+
+App sẽ tự khởi động backend Python, mở wizard cấu hình API key trong cửa sổ Settings ngay lần chạy đầu, và lưu vào `.env`.
+
+**Yêu cầu:** Python 3.10+, Node.js 20+, [Rust toolchain](https://www.rust-lang.org/tools/install) (cần thiết để build Tauri). Lần build đầu mất 3-5 phút để compile Rust dependencies.
+
+**Build file cài đặt Windows (Inno Setup, khuyến nghị phát hành):**
+
+1. Cài [Inno Setup 6](https://jrsoftware.org/isinfo.php) (có `ISCC.exe`).
+2. Trong thư mục gốc repo:
+
+```bash
+npm run installer:win:build
+```
+
+File `MiLamVanPhong-Setup-0.1.0-x64.exe` nằm trong `dist/installer/`.
+
+### Phát hành (push `.exe` lên GitHub Releases)
+
+Bạn có 2 cách phổ biến. Cách A dùng GitHub CLI (`gh`) nhanh và chuẩn cho maintainer.
+
+**A) Dùng GitHub CLI (khuyến nghị)**
+
+```bash
+# 1) (tuỳ chọn nhưng nên có) tạo tag version
+git tag v0.1.0
+git push origin v0.1.0
+
+# 2) tạo GitHub Release và upload installer .exe
+gh release create v0.1.0 "dist/installer/MiLamVanPhong-Setup-0.1.0-x64.exe" ^
+  --title "Mì Làm Văn Phòng v0.1.0" ^
+  --notes "Windows installer (Inno Setup)."
+```
+
+Nếu repo private hoặc máy mới, đăng nhập một lần:
+
+```bash
+gh auth login
+```
+
+**B) Dùng web UI của GitHub**
+
+- Vào tab **Releases** → **Draft a new release**
+- Chọn tag `v0.1.0` (hoặc tạo tag mới)
+- Kéo-thả file `dist/installer/MiLamVanPhong-Setup-0.1.0-x64.exe` vào phần **Attach binaries**
+- Publish release
+
+### Installer đang hoạt động thế nào (tóm tắt kỹ thuật)
+
+- **`npm run installer:win:build`** gọi `scripts/installer/Build-WindowsInstaller.ps1`.
+- Script này tạo một thư mục **staging** ở `%TEMP%\MiLamVanPhong-installer-staging`, rồi `robocopy` codebase vào staging (loại trừ `.git`, `node_modules`, `target`,…).
+- Sau đó build app desktop:
+  - `desktop/`: `npm install` → `npm run build` (Vite) → `npm run tauri:build` (Rust/Tauri)
+  - Copy `mi-lam-van-phong.exe` và các `.dll` từ `desktop/src-tauri/target/release/` sang staging.
+- Cuối cùng chạy **Inno Setup** (`ISCC.exe`) với file `scripts/installer/MiLamVanPhong.iss` để đóng gói ra file `.exe` trong `dist/installer/`.
+- Trong wizard Inno Setup có task **“Tạo venv và chạy pip install”**:
+  - Nếu user tick, installer sẽ chạy `scripts/installer/post-install-python.bat` (trong thư mục cài đặt) để tạo `.venv` và `pip install -r requirements.txt`.
+  - Nếu máy chưa có Python, script sẽ tự thử cài **Python bản mới nhất 3.x** qua `winget`, rồi mới tạo `.venv` và chạy `pip install`.
+  - Nếu PowerShell/CMD phiên hiện tại chưa nhận PATH sau khi cài, chỉ cần mở lại installer/app hoặc mở terminal mới rồi chạy lại `post-install-python.bat`.
+
+Người dùng chạy installer `.exe`; wizard có tùy chọn tạo `.venv` và `pip install -r requirements.txt` (cần Python 3.10+ và Internet).
+
+Chi tiết: [scripts/installer/README.md](scripts/installer/README.md).
+
+**Hoặc chỉ build gói Tauri (không có wizard Inno):**
+
+```bash
+npm run desktop:build
+```
+
+File NSIS/MSI sinh ra trong `desktop/src-tauri/target/release/bundle/`.
+
+**Cài nhanh từ mã nguồn (không đóng gói):** double-click `Cai-dat.bat` hoặc `npm run installer:win:source`.
+
+---
+
+**Hoặc CLI gọn nhẹ qua npm** (cho dev hoặc CI):
 
 ```bash
 npm install -g @vrsen/openswarm
 openswarm
 ```
 
-Wizard sẽ tự lo: xác thực, dependencies, và cấu hình.
-
-**Yêu cầu:** Node.js 20+ (Python 3.10+ tự động cài).
+Wizard sẽ tự lo: xác thực, dependencies, và cấu hình. Yêu cầu Node.js 20+ (Python 3.10+ tự động cài).
 
 ## Tự build swarm văn phòng riêng của bạn
 
@@ -126,13 +208,30 @@ Star repo trên GitHub để cập nhật và giúp chúng tôi ưu tiên tính 
 
 ## Dành cho dev
 
-**Chạy local:**
+**Chạy native desktop app (khuyến nghị):**
 
 ```bash
-git clone https://github.com/VRSEN/openswarm.git
-cd openswarm
-python swarm.py
+pip install -r requirements.txt
+npm run desktop:install
+npm run desktop:dev
 ```
+
+Tauri sẽ spawn `python server.py` làm sidecar, đợi `/desktop/health` trả `200`, rồi mở cửa sổ React. Sửa file trong `desktop/src/` sẽ hot-reload, sửa Python sẽ áp dụng sau khi bạn bấm "Khởi động lại" ở thanh tiêu đề.
+
+**Chỉ chạy backend (không UI native):**
+
+```bash
+python server.py           # FastAPI ở localhost:8080
+# hoặc
+python swarm.py            # giao diện terminal cũ
+```
+
+**Cấu trúc:**
+
+- `desktop/`           — frontend Tauri + React (Vite + TypeScript).
+- `desktop/src-tauri/` — vỏ Rust spawn Python sidecar.
+- `server.py`         — FastAPI: agency endpoints + `/desktop/*` (env, files).
+- `swarm.py`          — `create_agency()` và CLI fallback.
 
 **Triển khai Docker:**
 
@@ -141,12 +240,6 @@ git clone https://github.com/VRSEN/openswarm.git
 cd openswarm
 cp .env.example .env        # thêm API keys của bạn
 docker-compose up --build
-```
-
-**API server:**
-
-```bash
-python server.py           # chạy ở localhost:8080
 ```
 
 ---

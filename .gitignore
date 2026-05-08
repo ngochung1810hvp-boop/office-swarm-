@@ -184,3 +184,14 @@ cython_debug/
 .agency_swarm/
 third_party/
 .claude/
+
+# Tauri / desktop app
+desktop/dist/
+desktop/node_modules/
+desktop/src-tauri/target/
+desktop/src-tauri/gen/
+desktop/.vite/
+
+# Runtime working dirs (auto-created by desktop_api.py)
+uploads/
+outputs/
